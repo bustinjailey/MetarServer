@@ -8,14 +8,11 @@ var jsonQuery = require("json-query");
 var app = express();
 app.use(express.logger());
 
-var lat = "39.0780";
-var lon = "-77.5575";
-
-var filePath = "./data/GlobalAirportDatabase.txt";
+var dataPath = "./data/GlobalAirportDatabase.txt";
 var transformedData = "";
 
 // Dump CSV in to JSON
-csv().from(filePath, {delimiter: ":"}).to.array(function(data){
+csv().from(dataPath, {delimiter: ":"}).to.array(function(data){
 	transformedData = transformData(data);
 	console.log("successful parse and transform");
 });
@@ -73,12 +70,37 @@ function getClosestAirport(lat, lon, json) {
 	return bestMatch;
 }
 
-app.get("/", function(req, res){
-	// On web request, send data file stuff	
+app.get("/metar", function(req, res){
+	// Chantilly, VA: /metar?lat=38.8750&lon=-77.4205
 	
+	lat = parseFloat(req.query.lat);
+	lon = parseFloat(req.query.lon);
+	
+	if(isNaN(lat) || isNaN(lon)){
+		res.send("Error: Incorrect Latitude or Longitude");
+		return;
+	}
+	
+	// get closest code
 	var closestAirport = getClosestAirport(lat, lon, transformedData);
+	
+	// get metar for closest code
+	http.get("http://weather.noaa.gov/pub/data/observations/metar/stations/" + closestAirport.icao + ".TXT").on("response", function(getResp){
+		var metar = "";
+		getResp.on("data", function(chunk){
+			// save file contents to var			
+			metar += chunk;
+		});
 		
-	res.send(closestCode);
+		getResp.on("end", function(){
+			console.log(metar);
+			// Just send the second line
+			res.send(metar.split("\n").splice(1).join("\n"));
+		})
+		
+	}).on("error", function(e){
+		console.log("Got error: " + e.message);
+	});
 });
 
 var port = process.env.PORT || 5000;
