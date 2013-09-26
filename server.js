@@ -1,12 +1,12 @@
 var express = require("express");
 var http = require("http");
-var __ = require("underscore");
-var fs = require("fs");
 var csv = require("csv");
 var $ = require("jQuery");
-var jsonQuery = require("json-query");
+var jade = require("jade");
 var app = express();
 app.use(express.logger());
+// look up node-restful and jade
+app.set('view engine', 'jade');
 
 var dataPath = "./data/GlobalAirportDatabase.txt";
 var transformedData = "";
