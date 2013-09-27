@@ -5,6 +5,7 @@ var $ = require("jQuery");
 
 var app = express();
 app.use(express.logger());
+app.use(express.bodyParser());
 
 var dataPath = "./data/GlobalAirportDatabase.txt";
 var transformedData = "";
@@ -68,14 +69,15 @@ function getClosestAirport(lat, lon, json) {
 	return bestMatch;
 }
 
-app.get("/", function(req, res){
-	// Chantilly, VA: ?lat=38.8750&lon=-77.4205
+app.post("/", function(req, res){
+	// Chantilly, VA: lat=38.8750&lon=-77.4205
 	
-	lat = parseFloat(req.query.lat);
-	lon = parseFloat(req.query.lon);
+	lat = parseFloat(req.body.lat);
+	lon = parseFloat(req.body.lon);
 	
 	if(isNaN(lat) || isNaN(lon)){
-		res.send("Error: Incorrect Latitude or Longitude");
+		var errorMsg = "request error";
+		res.send(JSON.stringify({1 : errorMsg}));
 		return;
 	}
 	
@@ -93,7 +95,8 @@ app.get("/", function(req, res){
 		getResp.on("end", function(){
 			console.log(metar);
 			// Just send the second line
-			res.send(metar.split("\n").splice(1).join("\n"));
+			var secondLine = metar.split("\n").splice(1).join("\n")
+			res.send(JSON.stringify({1: secondLine}));
 		})
 		
 	}).on("error", function(e){
