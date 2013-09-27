@@ -2,11 +2,9 @@ var express = require("express");
 var http = require("http");
 var csv = require("csv");
 var $ = require("jQuery");
-var jade = require("jade");
+
 var app = express();
 app.use(express.logger());
-// look up node-restful and jade
-app.set('view engine', 'jade');
 
 var dataPath = "./data/GlobalAirportDatabase.txt";
 var transformedData = "";
@@ -70,8 +68,8 @@ function getClosestAirport(lat, lon, json) {
 	return bestMatch;
 }
 
-app.get("/metar", function(req, res){
-	// Chantilly, VA: /metar?lat=38.8750&lon=-77.4205
+app.get("/", function(req, res){
+	// Chantilly, VA: ?lat=38.8750&lon=-77.4205
 	
 	lat = parseFloat(req.query.lat);
 	lon = parseFloat(req.query.lon);
@@ -103,7 +101,7 @@ app.get("/metar", function(req, res){
 	});
 });
 
-var port = process.env.PORT || 5000;
+var port = process.env.PORT || 5001;
 app.listen(port, function() {
 	console.log("Listening on " + port);
 });
