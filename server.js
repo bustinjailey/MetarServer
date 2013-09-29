@@ -71,12 +71,14 @@ function getClosestAirport(lat, lon, json) {
 
 app.post("/", function(req, res){
 	// Chantilly, VA: lat=38.8750&lon=-77.4205
+	console.log("Lat: " + req.body.lat);
+	console.log("Lon: " + req.body.lon);
 	
 	lat = parseFloat(req.body.lat);
 	lon = parseFloat(req.body.lon);
 	
 	if(isNaN(lat) || isNaN(lon)){
-		var errorMsg = "request error";
+		var errorMsg = "req. e.";
 		res.send(JSON.stringify({1 : errorMsg}));
 		return;
 	}
