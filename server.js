@@ -76,7 +76,7 @@ app.post("/", function(req, res){
 	console.log(req.body);
 
 	lat = parseFloat(req.body[LATITUDE_KEY]) / 10000;
-	lon = parseFloat(req.body.[LONGITUDE_KEY]) / 10000;
+	lon = parseFloat(req.body[LONGITUDE_KEY]) / 10000;
 	
 	if(isNaN(lat) || isNaN(lon)){
 		var errorMsg = "req. e.";
