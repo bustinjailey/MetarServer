@@ -99,7 +99,10 @@ app.post("/", function(req, res){
 			console.log(metar);
 			// Just send the second line
 			var secondLine = metar.split("\n").splice(1)[0];
-			res.send(JSON.stringify({1: secondLine}));
+			
+			var out = JSON.stringify({1: secondLine.substring(0,4)});
+			console.log(out);
+			res.send(out);
 		})
 		
 	}).on("error", function(e){
