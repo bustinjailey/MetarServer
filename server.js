@@ -9,6 +9,8 @@ app.use(express.bodyParser());
 
 var dataPath = "./data/GlobalAirportDatabase.txt";
 var transformedData = "";
+var LATITUDE_KEY = 1;
+var LONGITUDE_KEY = 2;
 
 // Dump CSV in to JSON
 csv().from(dataPath, {delimiter: ":"}).to.array(function(data){
@@ -73,8 +75,8 @@ app.post("/", function(req, res){
 	// Chantilly, VA: lat=38.8750&lon=-77.4205
 	console.log(req.body);
 	
-	lat = parseFloat(req.body.lat);
-	lon = parseFloat(req.body.lon);
+	lat = parseFloat(req.body.LATITUDE_KEY) / 10000;
+	lon = parseFloat(req.body.LONGITUDE_KEY) / 10000;
 	
 	if(isNaN(lat) || isNaN(lon)){
 		var errorMsg = "req. e.";
