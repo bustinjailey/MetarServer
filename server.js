@@ -100,7 +100,7 @@ app.post("/", function(req, res){
 			// Just send the second line
 			var secondLine = metar.split("\n").splice(1)[0];
 			
-			var out = JSON.stringify({1: secondLine.substring(0, secondLine.indexOf("RMK"))});
+			var out = JSON.stringify({1: secondLine.substring(0, secondLine.indexOf("RMK").trim())});
 			console.log(out);
 			res.send(out);
 		})
