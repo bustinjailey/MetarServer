@@ -71,8 +71,7 @@ function getClosestAirport(lat, lon, json) {
 
 app.post("/", function(req, res){
 	// Chantilly, VA: lat=38.8750&lon=-77.4205
-	console.log("Lat: " + req.body.lat);
-	console.log("Lon: " + req.body.lon);
+	console.log(req.body);
 	
 	lat = parseFloat(req.body.lat);
 	lon = parseFloat(req.body.lon);
