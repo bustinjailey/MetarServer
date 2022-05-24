@@ -9,7 +9,7 @@
   "main": "server.js",
   "dependencies": {
     "express": "~3.4.0",
-    "csv": "~0.3.6",
+    "csv": "~6.1.0",
     "jQuery": "~1.7.4",
     "jsdom": "~0.8.5",
     "xmlhttprequest": "~1.8.0"
